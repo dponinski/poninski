@@ -393,7 +393,7 @@ img {
   font-size: 11px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--fg-faint);
+  color: var(--fg);
 }
 
 .card h3 {
