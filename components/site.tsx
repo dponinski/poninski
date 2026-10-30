@@ -141,11 +141,7 @@ function Hero() {
               onMouseEnter={() =>
                 inspect({
                   label,
-                  tokens: [
-                    "--font-family-serif",
-                    "--font-family-mono",
-                    "--color-text-resting-muted",
-                  ],
+                  tokens: [],
                 })
               }
               onMouseLeave={reset}
@@ -188,7 +184,7 @@ function Work() {
             onMouseEnter={() =>
               inspect({
                 label: `${system.name} / ${system.org}`,
-                tokens: [...system.tokens],
+                tokens: [],
               })
             }
             onMouseLeave={reset}
@@ -199,13 +195,6 @@ function Work() {
             </div>
             <h3>{system.name}</h3>
             <p>{system.summary}</p>
-            <div className="card__tokens">
-              {system.tokens.map((token) => (
-                <span className="chip" key={token}>
-                  {token.replace("--", "")}
-                </span>
-              ))}
-            </div>
             <div className="card__detail" id={`project-detail-${system.id}`}>
               {system.role}. {system.outcome}
             </div>

@@ -15,6 +15,7 @@
   --accent-hover-fg: var(--color-text-active-subtle);
   --selection-fg: var(--color-text-active-strong);
   --line: var(--color-border-resting-subtle);
+  --line-accent: var(--color-border-active-muted);
   --panel: color-mix(in srgb, var(--color-surface-inverse) 35%, var(--bg));
   --space-1: var(--spacing-xs);
   --space-2: var(--spacing-sm);
@@ -41,6 +42,7 @@
     --accent-hover-fg: var(--color-text-active-stronger);
     --selection-fg: var(--color-text-inverse);
     --line: var(--color-border-resting-strong);
+    --line-accent: var(--color-border-active-muted);
     --panel: color-mix(in srgb, var(--color-surface-inverse) 8%, var(--bg));
   }
 }
@@ -418,7 +420,7 @@ img {
   display: none;
   margin-top: var(--space-4);
   padding-top: var(--space-4);
-  border-top: 1px solid var(--line);
+  border-top: 1px solid var(--line-accent);
   color: var(--accent);
   font-size: 14px;
   line-height: 1.5;

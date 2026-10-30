@@ -9,12 +9,6 @@ export const systems = [
       "Owned the system end to end — Figma libraries and design tokens through a versioned component package engineering imports across four products.",
     outcome:
       "40+ components, AI-assisted design-to-code, no dedicated systems engineering staff.",
-    tokens: [
-      "--color-surface-active-stronger",
-      "--radius-md",
-      "--font-family-sans",
-      "--font-weight-semibold",
-    ],
   },
   {
     id: "ethos",
@@ -24,13 +18,7 @@ export const systems = [
     role: "Sr. UX Designer",
     summary:
       "Drove full adoption across 4–5 B2B product lines and wired design tokens into the shared component library so design and code stayed one source of truth.",
-    outcome: "Adopted by every design and engineering team on those products.",
-    tokens: [
-      "--color-surface-active-muted",
-      "--radius-lg",
-      "--font-family-serif",
-      "--font-weight-bold",
-    ],
+    outcome: "Adopted by every design and engineering team on those products."
   },
   {
     id: "ember",
@@ -40,13 +28,7 @@ export const systems = [
     role: "Lead UX Designer",
     summary:
       "Led UX for US and European retail during a headless migration, and built Ember to unify the brand’s commerce experience across regions.",
-    outcome: "One system for two continents and a new architecture.",
-    tokens: [
-      "--color-border-active-subtle",
-      "--radius-xl",
-      "--font-family-sans",
-      "--font-weight-black",
-    ],
+    outcome: "One system for two continents and a new architecture."
   },
   {
     id: "momentum",
@@ -56,13 +38,7 @@ export const systems = [
     role: "UX Manager",
     summary:
       "Scaled Momentum from UI kits to framework-level engineering while managing a team of eight designers across B2C, B2B, and international products.",
-    outcome: "Adoption across ~6 engineering teams.",
-    tokens: [
-      "--color-border-active-stronger",
-      "--radius-sm",
-      "--font-family-mono",
-      "--font-weight-regular",
-    ],
+    outcome: "Adoption across ~6 engineering teams."
   },
 ] as const;
 
