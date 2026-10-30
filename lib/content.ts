@@ -3,7 +3,7 @@ export const systems = [
     id: "skyline",
     name: "Skyline",
     org: "Trepp",
-    years: "2024 —",
+    years: "2024 — Present",
     role: "UX Manager",
     summary:
       "Owned the system end to end — Figma libraries and design tokens through a versioned component package engineering imports across four products.",
