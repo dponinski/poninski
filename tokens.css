@@ -1,0 +1,23 @@
+:root {
+  --color-resting-subtle: #D5D5D5;
+  --color-resting-muted: #9D9D9D;
+  --color-resting-strong: #474747;
+  --color-resting-stronger: #2A2A2A;
+  --color-active-subtle: #ABEBF2;
+  --color-active-muted: #72D8E5;
+  --color-active-strong: #006572;
+  --color-active-stronger: #003E46;
+  --font-sans: "Geist";
+  --font-serif: "Libre Baskerville";
+  --font-mono: "Geist Mono";
+  --font-weight-regular: 400;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  --font-weight-black: 900;
+  --radius-xs: 4px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 12px;
+  --radius-full: 1000px;
+}
