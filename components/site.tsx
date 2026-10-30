@@ -412,8 +412,7 @@ function Footer() {
   const { inspect, reset } = useInspect();
   const links = [
     ["https://www.linkedin.com/in/dponinski", "LinkedIn"],
-    ["https://dribbble.com/poninski", "Dribbble"],
-    ["mailto:hello@poninski.com", "Email"],
+    ["mailto:dponinski@icloud.com", "Email"],
   ] as const;
 
   return (
