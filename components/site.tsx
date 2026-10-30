@@ -78,7 +78,7 @@ function Nav() {
         }
         onMouseLeave={reset}
       >
-        David Poninski <span>DS / 16</span>
+        David Poninski <span>Design Systems Leader</span>
       </a>
       <nav className="nav__links" aria-label="Sections">
         {links.map(([href, label]) => (
