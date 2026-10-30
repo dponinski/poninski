@@ -81,6 +81,14 @@ function Hero() {
           I take Figma libraries and design tokens all the way to production
           code. Four systems shipped. No handoff gap. No drift.
         </p>
+        <div className="hero__actions">
+          <a className="button button--primary" href="#work">
+            Explore selected work <span aria-hidden="true">↘</span>
+          </a>
+          <a className="button button--quiet" href="mailto:hello@poninski.com">
+            Get in touch <span aria-hidden="true">↗</span>
+          </a>
+        </div>
         <div className="stats">
           {[
             ["4", "Systems owned"],
@@ -133,6 +141,7 @@ function Work() {
             type="button"
             className="card"
             aria-expanded={open === system.id}
+            aria-controls={`project-detail-${system.id}`}
             onClick={() =>
               setOpen((current) => (current === system.id ? null : system.id))
             }
@@ -157,9 +166,12 @@ function Work() {
                 </span>
               ))}
             </div>
-            <div className="card__detail">
+            <div className="card__detail" id={`project-detail-${system.id}`}>
               {system.role}. {system.outcome}
             </div>
+            <span className="card__toggle" aria-hidden="true">
+              {open === system.id ? "− Close notes" : "+ Project notes"}
+            </span>
           </button>
         ))}
       </div>
@@ -384,10 +396,12 @@ export function Site() {
         Skip to work
       </a>
       <Nav />
-      <Hero />
-      <Work />
-      <TokenLab />
-      <Approach />
+      <main>
+        <Hero />
+        <Work />
+        <TokenLab />
+        <Approach />
+      </main>
       <Footer />
       <Inspector />
     </InspectProvider>

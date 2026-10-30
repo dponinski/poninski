@@ -30,6 +30,7 @@ function mix(
 export function TokenField() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const pointer = useRef({ x: 0.72, y: 0.38, active: false });
+  const schedulePaint = useRef<() => void>(() => undefined);
   const { inspect } = useInspect();
 
   useEffect(() => {
@@ -42,8 +43,6 @@ export function TokenField() {
       "(prefers-reduced-motion: reduce)",
     ).matches;
     let frame = 0;
-    let cols = 18;
-    let rows = 12;
 
     const paint = () => {
       const rect = canvas.getBoundingClientRect();
@@ -57,8 +56,8 @@ export function TokenField() {
       const deep = hexToRgb(readVar("--color-active-strong") || "#006572");
       const radius = Number.parseFloat(readVar("--radius-xs") || "4");
       const gap = 6;
-      cols = Math.max(10, Math.floor(rect.width / 28));
-      rows = Math.max(8, Math.floor(rect.height / 28));
+      const cols = Math.max(10, Math.floor(rect.width / 28));
+      const rows = Math.max(8, Math.floor(rect.height / 28));
       const cellW = (rect.width - gap * (cols + 1)) / cols;
       const cellH = (rect.height - gap * (rows + 1)) / rows;
       const px = pointer.current.x * rect.width;
@@ -90,24 +89,31 @@ export function TokenField() {
         context.arc(px, py, 14, 0, Math.PI * 2);
         context.stroke();
       }
-
-      frame = window.requestAnimationFrame(paint);
     };
 
-    frame = window.requestAnimationFrame(paint);
-    return () => window.cancelAnimationFrame(frame);
+    schedulePaint.current = () => {
+      if (frame) return;
+      frame = window.requestAnimationFrame(() => {
+        frame = 0;
+        paint();
+      });
+    };
+
+    const resizeObserver = new ResizeObserver(schedulePaint.current);
+    resizeObserver.observe(canvas);
+    schedulePaint.current();
+
+    return () => {
+      resizeObserver.disconnect();
+      if (frame) window.cancelAnimationFrame(frame);
+      schedulePaint.current = () => undefined;
+    };
   }, []);
 
   return (
     <div
       className="field-wrap"
-      onPointerMove={(event) => {
-        const rect = event.currentTarget.getBoundingClientRect();
-        pointer.current = {
-          x: (event.clientX - rect.left) / rect.width,
-          y: (event.clientY - rect.top) / rect.height,
-          active: true,
-        };
+      onPointerEnter={() =>
         inspect({
           label: "Activation field",
           tokens: [
@@ -116,10 +122,20 @@ export function TokenField() {
             "--color-active-strong",
             "--radius-xs",
           ],
-        });
+        })
+      }
+      onPointerMove={(event) => {
+        const rect = event.currentTarget.getBoundingClientRect();
+        pointer.current = {
+          x: (event.clientX - rect.left) / rect.width,
+          y: (event.clientY - rect.top) / rect.height,
+          active: true,
+        };
+        schedulePaint.current();
       }}
       onPointerLeave={() => {
         pointer.current.active = false;
+        schedulePaint.current();
       }}
     >
       <canvas ref={canvasRef} aria-hidden="true" />
