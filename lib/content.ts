@@ -10,9 +10,9 @@ export const systems = [
     outcome:
       "40+ components, AI-assisted design-to-code, no dedicated systems engineering staff.",
     tokens: [
-      "--color-active-strong",
+      "--color-surface-active-stronger",
       "--radius-md",
-      "--font-sans",
+      "--font-family-sans",
       "--font-weight-semibold",
     ],
   },
@@ -26,9 +26,9 @@ export const systems = [
       "Drove full adoption across 4–5 B2B product lines and wired design tokens into the shared component library so design and code stayed one source of truth.",
     outcome: "Adopted by every design and engineering team on those products.",
     tokens: [
-      "--color-active-muted",
+      "--color-surface-active-muted",
       "--radius-lg",
-      "--font-serif",
+      "--font-family-serif",
       "--font-weight-bold",
     ],
   },
@@ -42,9 +42,9 @@ export const systems = [
       "Led UX for US and European retail during a headless migration, and built Ember to unify the brand’s commerce experience across regions.",
     outcome: "One system for two continents and a new architecture.",
     tokens: [
-      "--color-active-subtle",
+      "--color-border-active-subtle",
       "--radius-xl",
-      "--font-sans",
+      "--font-family-sans",
       "--font-weight-black",
     ],
   },
@@ -58,9 +58,9 @@ export const systems = [
       "Scaled Momentum from UI kits to framework-level engineering while managing a team of eight designers across B2C, B2B, and international products.",
     outcome: "Adoption across ~6 engineering teams.",
     tokens: [
-      "--color-active-stronger",
+      "--color-border-active-stronger",
       "--radius-sm",
-      "--font-mono",
+      "--font-family-mono",
       "--font-weight-regular",
     ],
   },

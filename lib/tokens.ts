@@ -1,139 +1,117 @@
-export type TokenGroup = "color" | "font" | "weight" | "radius";
+export type TokenGroup =
+  | "textColor"
+  | "borderColor"
+  | "surfaceColor"
+  | "fontFamily"
+  | "fontSize"
+  | "fontWeight"
+  | "spacing"
+  | "radius";
 
 export type Token = {
   name: string;
   cssVar: string;
   group: TokenGroup;
-  preview: "swatch" | "type" | "radius";
+  preview: "swatch" | "type" | "size" | "spacing" | "radius";
 };
 
+const colorSteps = ["subtle", "muted", "strong", "stronger"] as const;
+const colorStates = ["resting", "active"] as const;
+
+function colorTokens(kind: "text" | "border" | "surface"): Token[] {
+  const group = `${kind}Color` as TokenGroup;
+
+  return [
+    {
+      name: `${kind} / inverse`,
+      cssVar: `--color-${kind}-inverse`,
+      group,
+      preview: "swatch",
+    },
+    ...colorStates.flatMap((state) =>
+      colorSteps.map((step) => ({
+        name: `${kind} / ${state} / ${step}`,
+        cssVar: `--color-${kind}-${state}-${step}`,
+        group,
+        preview: "swatch" as const,
+      })),
+    ),
+  ];
+}
+
 export const tokens: Token[] = [
-  {
-    name: "Resting / Subtle",
-    cssVar: "--color-resting-subtle",
-    group: "color",
-    preview: "swatch",
-  },
-  {
-    name: "Resting / Muted",
-    cssVar: "--color-resting-muted",
-    group: "color",
-    preview: "swatch",
-  },
-  {
-    name: "Resting / Strong",
-    cssVar: "--color-resting-strong",
-    group: "color",
-    preview: "swatch",
-  },
-  {
-    name: "Resting / Stronger",
-    cssVar: "--color-resting-stronger",
-    group: "color",
-    preview: "swatch",
-  },
-  {
-    name: "Active / Subtle",
-    cssVar: "--color-active-subtle",
-    group: "color",
-    preview: "swatch",
-  },
-  {
-    name: "Active / Muted",
-    cssVar: "--color-active-muted",
-    group: "color",
-    preview: "swatch",
-  },
-  {
-    name: "Active / Strong",
-    cssVar: "--color-active-strong",
-    group: "color",
-    preview: "swatch",
-  },
-  {
-    name: "Active / Stronger",
-    cssVar: "--color-active-stronger",
-    group: "color",
-    preview: "swatch",
-  },
+  ...colorTokens("text"),
+  ...colorTokens("border"),
+  ...colorTokens("surface"),
   {
     name: "Sans",
-    cssVar: "--font-sans",
-    group: "font",
+    cssVar: "--font-family-sans",
+    group: "fontFamily",
     preview: "type",
   },
   {
     name: "Serif",
-    cssVar: "--font-serif",
-    group: "font",
+    cssVar: "--font-family-serif",
+    group: "fontFamily",
     preview: "type",
   },
   {
     name: "Mono",
-    cssVar: "--font-mono",
-    group: "font",
+    cssVar: "--font-family-mono",
+    group: "fontFamily",
     preview: "type",
   },
-  {
-    name: "Regular",
-    cssVar: "--font-weight-regular",
-    group: "weight",
-    preview: "type",
-  },
-  {
-    name: "Semibold",
-    cssVar: "--font-weight-semibold",
-    group: "weight",
-    preview: "type",
-  },
-  {
-    name: "Bold",
-    cssVar: "--font-weight-bold",
-    group: "weight",
-    preview: "type",
-  },
-  {
-    name: "Black",
-    cssVar: "--font-weight-black",
-    group: "weight",
-    preview: "type",
-  },
-  {
-    name: "Radius XS",
-    cssVar: "--radius-xs",
-    group: "radius",
-    preview: "radius",
-  },
-  {
-    name: "Radius SM",
-    cssVar: "--radius-sm",
-    group: "radius",
-    preview: "radius",
-  },
-  {
-    name: "Radius MD",
-    cssVar: "--radius-md",
-    group: "radius",
-    preview: "radius",
-  },
-  {
-    name: "Radius LG",
-    cssVar: "--radius-lg",
-    group: "radius",
-    preview: "radius",
-  },
-  {
-    name: "Radius XL",
-    cssVar: "--radius-xl",
-    group: "radius",
-    preview: "radius",
-  },
-  {
-    name: "Radius Full",
-    cssVar: "--radius-full",
-    group: "radius",
-    preview: "radius",
-  },
+  ...[
+    ["Small", "--font-size-small"],
+    ["Base", "--font-size-base"],
+    ["H6", "--font-size-h6"],
+    ["H5", "--font-size-h5"],
+    ["H4", "--font-size-h4"],
+    ["H3", "--font-size-h3"],
+    ["H2", "--font-size-h2"],
+    ["H1", "--font-size-h1"],
+  ].map(([name, cssVar]) => ({
+    name,
+    cssVar,
+    group: "fontSize" as const,
+    preview: "size" as const,
+  })),
+  ...[
+    ["Regular", "--font-weight-regular"],
+    ["Semibold", "--font-weight-semibold"],
+    ["Bold", "--font-weight-bold"],
+    ["Black", "--font-weight-black"],
+  ].map(([name, cssVar]) => ({
+    name,
+    cssVar,
+    group: "fontWeight" as const,
+    preview: "type" as const,
+  })),
+  ...[
+    ["XS", "--spacing-xs"],
+    ["SM", "--spacing-sm"],
+    ["Base", "--spacing-base"],
+    ["LG", "--spacing-lg"],
+    ["XL", "--spacing-xl"],
+  ].map(([name, cssVar]) => ({
+    name,
+    cssVar,
+    group: "spacing" as const,
+    preview: "spacing" as const,
+  })),
+  ...[
+    ["XS", "--radius-xs"],
+    ["SM", "--radius-sm"],
+    ["MD", "--radius-md"],
+    ["LG", "--radius-lg"],
+    ["XL", "--radius-xl"],
+    ["Full", "--radius-full"],
+  ].map(([name, cssVar]) => ({
+    name: `Radius ${name}`,
+    cssVar,
+    group: "radius" as const,
+    preview: "radius" as const,
+  })),
 ];
 
 export const tokenIndex = Object.fromEntries(

@@ -1,20 +1,56 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import { principles, systems } from "@/lib/content";
 import { tokens } from "@/lib/tokens";
-import { InspectProvider, Inspector, useInspect } from "./inspect";
+import { InspectProvider, useInspect } from "./inspect";
 import { TokenField } from "./token-field";
 
 const defaultSpecimen = {
-  bg: "--color-resting-stronger",
-  fg: "--color-resting-subtle",
-  accent: "--color-active-muted",
-  accentFg: "--color-active-stronger",
-  font: "--font-serif",
+  font: "--font-family-serif",
+  size: "--font-size-h3",
   weight: "--font-weight-regular",
+  spacing: "--spacing-sm",
   radius: "--radius-md",
 };
+
+const defaultColors = {
+  text: "#0D0D0D",
+  border: "#2A2A2A",
+  surface: "#FFFFFF",
+};
+
+const colorRoles = [
+  { key: "text", label: "Text", token: "--lab-text-color" },
+  { key: "border", label: "Border", token: "--lab-border-color" },
+  { key: "surface", label: "Surface", token: "--lab-surface-color" },
+] as const;
+
+const selectorGroups = [
+  { label: "Font family", valueKey: "font", group: "fontFamily" },
+  { label: "Type size", valueKey: "size", group: "fontSize" },
+  { label: "Font weight", valueKey: "weight", group: "fontWeight" },
+  { label: "Spacing", valueKey: "spacing", group: "spacing" },
+  { label: "Corner radius", valueKey: "radius", group: "radius" },
+] as const;
+
+function getContrastRatio(foreground: string, background: string) {
+  const luminance = (hex: string) => {
+    const channels = [1, 3, 5].map((offset) => {
+      const value = Number.parseInt(hex.slice(offset, offset + 2), 16) / 255;
+      return value <= 0.04045
+        ? value / 12.92
+        : ((value + 0.055) / 1.055) ** 2.4;
+    });
+
+    return channels[0] * 0.2126 + channels[1] * 0.7152 + channels[2] * 0.0722;
+  };
+
+  const values = [luminance(foreground), luminance(background)].sort(
+    (first, second) => second - first,
+  );
+  return (values[0] + 0.05) / (values[1] + 0.05);
+}
 
 function Nav() {
   const { inspect, reset } = useInspect();
@@ -33,7 +69,11 @@ function Nav() {
         onMouseEnter={() =>
           inspect({
             label: "Wordmark",
-            tokens: ["--font-serif", "--font-mono", "--color-resting-stronger"],
+            tokens: [
+              "--font-family-serif",
+              "--font-family-mono",
+              "--color-text-resting-stronger",
+            ],
           })
         }
         onMouseLeave={reset}
@@ -50,8 +90,8 @@ function Nav() {
                 label: `${label} link`,
                 tokens: [
                   "--radius-full",
-                  "--font-mono",
-                  "--color-active-strong",
+                  "--font-family-mono",
+                  "--color-text-active-strong",
                 ],
               })
             }
@@ -102,9 +142,9 @@ function Hero() {
                 inspect({
                   label,
                   tokens: [
-                    "--font-serif",
-                    "--font-mono",
-                    "--color-resting-muted",
+                    "--font-family-serif",
+                    "--font-family-mono",
+                    "--color-text-resting-muted",
                   ],
                 })
               }
@@ -182,134 +222,148 @@ function Work() {
 function TokenLab() {
   const { inspect } = useInspect();
   const [picked, setPicked] = useState(defaultSpecimen);
-
-  const groups = useMemo(
-    () => ({
-      color: tokens.filter((token) => token.group === "color"),
-      font: tokens.filter((token) => token.group === "font"),
-      weight: tokens.filter((token) => token.group === "weight"),
-      radius: tokens.filter((token) => token.group === "radius"),
-    }),
-    [],
-  );
-
-  const apply = (cssVar: string, group: string) => {
-    setPicked((current) => {
-      if (group === "font") return { ...current, font: cssVar };
-      if (group === "weight") return { ...current, weight: cssVar };
-      if (group === "radius") return { ...current, radius: cssVar };
-      if (cssVar.includes("resting-subtle") || cssVar.includes("resting-muted")) {
-        return { ...current, fg: cssVar };
-      }
-      if (cssVar.includes("resting")) {
-        return { ...current, bg: cssVar };
-      }
-      if (cssVar.includes("active-stronger") || cssVar.includes("active-strong")) {
-        return { ...current, accentFg: cssVar };
-      }
-      return { ...current, accent: cssVar };
-    });
-    inspect({ label: "Specimen", tokens: [cssVar] });
-  };
+  const [colors, setColors] = useState(defaultColors);
+  const textContrast = getContrastRatio(colors.text, colors.surface);
+  const borderContrast = getContrastRatio(colors.border, colors.surface);
 
   return (
-    <section className="section shell" id="tokens">
+    <section className="section section--lab shell" id="tokens">
       <div className="section__head">
-        <h2>A living token file</h2>
+        <div>
+          <p className="kicker">A small, live system</p>
+          <h2>Make it yours.</h2>
+        </div>
         <p>
-          This site is painted only from the primitives in tokens.css. Click a
-          value — the specimen on the right restyles in place.
+          Choose three semantic colors, then tune the supporting tokens. The
+          component preview updates as you go.
         </p>
       </div>
       <div className="lab">
-        <div className="token-grid">
-          {(
-            [
-              ["Color", groups.color],
-              ["Family", groups.font],
-              ["Weight", groups.weight],
-              ["Radius", groups.radius],
-            ] as const
-          ).map(([label, list]) => (
-            <div key={label}>
-              <p className="kicker">{label}</p>
-              <div className="token-row">
-                {list.map((token) => {
-                  const selected = Object.values(picked).includes(token.cssVar);
-                  return (
-                    <button
-                      key={token.cssVar}
-                      type="button"
-                      className={selected ? "token-btn is-on" : "token-btn"}
-                      onClick={() => apply(token.cssVar, token.group)}
-                      onMouseEnter={() =>
-                        inspect({
-                          label: token.name,
-                          tokens: [token.cssVar],
-                        })
-                      }
-                    >
-                      {token.preview === "swatch" ? (
-                        <span
-                          className="swatch"
-                          style={{ background: `var(${token.cssVar})` }}
-                        />
-                      ) : null}
-                      {token.preview === "type" && token.group === "font" ? (
-                        <span
-                          className="type-chip"
-                          style={{ fontFamily: `var(${token.cssVar})` }}
-                        >
-                          Ag
-                        </span>
-                      ) : null}
-                      {token.preview === "type" && token.group === "weight" ? (
-                        <span
-                          className="type-chip"
-                          style={{ fontWeight: `var(${token.cssVar})` }}
-                        >
-                          Ag
-                        </span>
-                      ) : null}
-                      {token.preview === "radius" ? (
-                        <span
-                          className="radius-chip"
-                          style={{
-                            borderRadius: `var(${token.cssVar})`,
-                            height: 48,
-                          }}
-                        />
-                      ) : null}
-                      <small>{token.cssVar.replace("--", "")}</small>
-                    </button>
-                  );
-                })}
-              </div>
+        <div className="lab-controls">
+          <div
+            className="color-controls"
+            role="group"
+            aria-label="Custom semantic colors"
+          >
+            {colorRoles.map(({ key, label, token }) => (
+              <label className="color-control" key={key}>
+                <span className="color-control__label">{label}</span>
+                <span className="color-control__input">
+                  <input
+                    type="color"
+                    value={colors[key]}
+                    aria-label={`${label} color`}
+                    onChange={(event) => {
+                      setColors((current) => ({
+                        ...current,
+                        [key]: event.target.value,
+                      }));
+                      inspect({ label: `${label} color`, tokens: [token] });
+                    }}
+                  />
+                  <code>{colors[key].toUpperCase()}</code>
+                </span>
+                <small>{token}</small>
+              </label>
+            ))}
+          </div>
+          <div
+            className="contrast-checker"
+            role="group"
+            aria-label="WCAG AA contrast results"
+          >
+            <p className="contrast-checker__title">Contrast check</p>
+            <div className="contrast-checker__item">
+              <span className="contrast-checker__label">
+                Text on surface · 4.5:1
+              </span>
+              <strong>
+                {textContrast.toFixed(2)}:1 ·{" "}
+                {textContrast >= 4.5 ? "Pass AA" : "Fails AA"}
+              </strong>
             </div>
-          ))}
+            <div className="contrast-checker__item">
+              <span className="contrast-checker__label">
+                Ghost button border · 3:1
+              </span>
+              <strong>
+                {borderContrast.toFixed(2)}:1 ·{" "}
+                {borderContrast >= 3 ? "Pass AA" : "Fails AA"}
+              </strong>
+            </div>
+          </div>
+          <div className="select-controls">
+            {selectorGroups.map(({ label, valueKey, group }) => {
+              const choices = tokens.filter((token) => token.group === group);
+              return (
+                <label className="select-control" key={valueKey}>
+                  <span>{label}</span>
+                  <select
+                    value={picked[valueKey]}
+                    onChange={(event) => {
+                      const cssVar = event.target.value;
+                      setPicked((current) => ({
+                        ...current,
+                        [valueKey]: cssVar,
+                      }));
+                      inspect({ label, tokens: [cssVar] });
+                    }}
+                    onMouseEnter={() =>
+                      inspect({ label, tokens: [picked[valueKey]] })
+                    }
+                  >
+                    {choices.map((token) => (
+                      <option key={token.cssVar} value={token.cssVar}>
+                        {token.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              );
+            })}
+            <button
+              type="button"
+              className="reset-button"
+              onClick={() => {
+                setColors(defaultColors);
+                setPicked(defaultSpecimen);
+                inspect({
+                  label: "Default tokens",
+                  tokens: [
+                    "--color-text-resting-stronger",
+                    "--color-border-resting-stronger",
+                    "--color-surface-inverse",
+                  ],
+                });
+              }}
+            >
+              Reset to defaults
+            </button>
+          </div>
         </div>
         <aside
           className="specimen"
           style={
             {
-              "--specimen-bg": `var(${picked.bg})`,
-              "--specimen-fg": `var(${picked.fg})`,
-              "--specimen-accent": `var(${picked.accent})`,
-              "--specimen-accent-fg": `var(${picked.accentFg})`,
+              "--lab-text-color": colors.text,
+              "--lab-border-color": colors.border,
+              "--lab-surface-color": colors.surface,
               "--specimen-font": `var(${picked.font})`,
+              "--specimen-size": `var(${picked.size})`,
               "--specimen-weight": `var(${picked.weight})`,
+              "--specimen-spacing": `var(${picked.spacing})`,
               "--specimen-radius": `var(${picked.radius})`,
             } as React.CSSProperties
           }
         >
-          <span className="specimen__label">Component specimen</span>
-          <div>
-            <h3>Skyline Button</h3>
+        <span className="specimen__label">Live token preview</span>
+        <div className="specimen__content">
+          <h3>Built to belong.</h3>
             <p>
-              One component, seven tokens. Change the primitives and the API
-              stays put — the surface restyles because it never knew hex.
+            Three color tokens. One flexible component. Change the system,
+            not the interface.
             </p>
-            <span className="specimen__btn">Import from package</span>
+          <span className="specimen__btn">Explore the system <span aria-hidden="true">↗</span></span>
           </div>
         </aside>
       </div>
@@ -336,7 +390,11 @@ function Approach() {
             onMouseEnter={() =>
               inspect({
                 label: principle.title,
-                tokens: ["--font-serif", "--color-resting-strong", "--radius-md"],
+                tokens: [
+                  "--font-family-serif",
+                  "--color-text-resting-strong",
+                  "--radius-md",
+                ],
               })
             }
             onMouseLeave={reset}
@@ -362,7 +420,7 @@ function Footer() {
     <footer className="footer shell" id="contact">
       <div>
         <p className="kicker">Currently exploring</p>
-        <h2>Design Systems Manager roles.</h2>
+        <h2>Design Systems roles.</h2>
         <p>Remote. Tokens to production. Teams that want the system used.</p>
       </div>
       <div className="footer__links">
@@ -376,7 +434,11 @@ function Footer() {
             onMouseEnter={() =>
               inspect({
                 label,
-                tokens: ["--radius-full", "--color-active-strong", "--font-mono"],
+                tokens: [
+                  "--radius-full",
+                  "--color-text-active-strong",
+                  "--font-family-mono",
+                ],
               })
             }
             onMouseLeave={reset}
@@ -403,7 +465,6 @@ export function Site() {
         <Approach />
       </main>
       <Footer />
-      <Inspector />
     </InspectProvider>
   );
 }

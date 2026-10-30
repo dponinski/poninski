@@ -51,9 +51,15 @@ export function TokenField() {
       canvas.height = Math.floor(rect.height * dpr);
       context.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const resting = hexToRgb(readVar("--color-resting-muted") || "#9D9D9D");
-      const active = hexToRgb(readVar("--color-active-muted") || "#72D8E5");
-      const deep = hexToRgb(readVar("--color-active-strong") || "#006572");
+      const resting = hexToRgb(
+        readVar("--color-border-resting-muted") || "#9D9D9D",
+      );
+      const active = hexToRgb(
+        readVar("--color-surface-active-muted") || "#72D8E5",
+      );
+      const deep = hexToRgb(
+        readVar("--color-text-active-strong") || "#006572",
+      );
       const radius = Number.parseFloat(readVar("--radius-xs") || "4");
       const gap = 6;
       const cols = Math.max(10, Math.floor(rect.width / 28));
@@ -117,9 +123,9 @@ export function TokenField() {
         inspect({
           label: "Activation field",
           tokens: [
-            "--color-resting-muted",
-            "--color-active-muted",
-            "--color-active-strong",
+            "--color-border-resting-muted",
+            "--color-surface-active-muted",
+            "--color-text-active-strong",
             "--radius-xs",
           ],
         })

@@ -4,19 +4,19 @@ import "./globals.css";
 
 const sans = Geist({
   subsets: ["latin"],
-  variable: "--font-sans",
+  variable: "--next-font-sans",
 });
 
 const mono = Geist_Mono({
   subsets: ["latin"],
-  variable: "--font-mono",
+  variable: "--next-font-mono",
 });
 
 const serif = Libre_Baskerville({
   subsets: ["latin"],
   weight: ["400", "700"],
   style: ["normal", "italic"],
-  variable: "--font-serif",
+  variable: "--next-font-serif",
 });
 
 export const metadata: Metadata = {
