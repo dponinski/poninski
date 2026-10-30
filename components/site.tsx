@@ -11,7 +11,6 @@ const defaultSpecimen = {
   size: "--font-size-h3",
   weight: "--font-weight-regular",
   spacing: "--spacing-sm",
-  radius: "--radius-md",
 };
 
 const defaultColors = {
@@ -31,7 +30,6 @@ const selectorGroups = [
   { label: "Type size", valueKey: "size", group: "fontSize" },
   { label: "Font weight", valueKey: "weight", group: "fontWeight" },
   { label: "Spacing", valueKey: "spacing", group: "spacing" },
-  { label: "Corner radius", valueKey: "radius", group: "radius" },
 ] as const;
 
 function getContrastRatio(foreground: string, background: string) {
@@ -214,6 +212,14 @@ function TokenLab() {
   const [colors, setColors] = useState(defaultColors);
   const textContrast = getContrastRatio(colors.text, colors.surface);
   const borderContrast = getContrastRatio(colors.border, colors.surface);
+  const hasChanges =
+    colors.text !== defaultColors.text ||
+    colors.border !== defaultColors.border ||
+    colors.surface !== defaultColors.surface ||
+    picked.font !== defaultSpecimen.font ||
+    picked.size !== defaultSpecimen.size ||
+    picked.weight !== defaultSpecimen.weight ||
+    picked.spacing !== defaultSpecimen.spacing;
 
   return (
     <section className="section section--lab shell" id="tokens">
@@ -310,24 +316,6 @@ function TokenLab() {
                 </label>
               );
             })}
-            <button
-              type="button"
-              className="reset-button"
-              onClick={() => {
-                setColors(defaultColors);
-                setPicked(defaultSpecimen);
-                inspect({
-                  label: "Default tokens",
-                  tokens: [
-                    "--color-text-resting-stronger",
-                    "--color-border-resting-stronger",
-                    "--color-surface-inverse",
-                  ],
-                });
-              }}
-            >
-              Reset to defaults
-            </button>
           </div>
         </div>
         <aside
@@ -341,18 +329,68 @@ function TokenLab() {
               "--specimen-size": `var(${picked.size})`,
               "--specimen-weight": `var(${picked.weight})`,
               "--specimen-spacing": `var(${picked.spacing})`,
-              "--specimen-radius": `var(${picked.radius})`,
+              "--specimen-radius": "var(--radius-md)",
             } as React.CSSProperties
           }
         >
-        <span className="specimen__label">Live token preview</span>
-        <div className="specimen__content">
-          <h3>Built to belong.</h3>
+          <div className="specimen__top">
+            <span className="specimen__label">Live token preview</span>
+            <button
+              type="button"
+              className={`reset-button${hasChanges ? " reset-button--changed" : ""}`}
+              style={
+                {
+                  "--lab-text-color": colors.text,
+                  "--lab-border-color": colors.border,
+                  "--lab-surface-color": colors.surface,
+                } as React.CSSProperties
+              }
+              onClick={() => {
+                setColors(defaultColors);
+                setPicked(defaultSpecimen);
+                inspect({
+                  label: "Default tokens",
+                  tokens: [
+                    "--color-text-resting-stronger",
+                    "--color-border-resting-stronger",
+                    "--color-surface-inverse",
+                  ],
+                });
+              }}
+            >
+              <svg
+                aria-hidden="true"
+                viewBox="0 0 24 24"
+                className="reset-button__icon"
+                fill="none"
+              >
+                <path
+                  d="M3 12a9 9 0 1 0 2.64-6.36L3 8"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.75"
+                />
+                <path
+                  d="M3 3v5h5"
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="1.75"
+                />
+              </svg>
+              Reset
+            </button>
+          </div>
+          <div className="specimen__content">
+            <h3>Built to belong.</h3>
             <p>
-            Three color tokens. One flexible component. Change the system,
-            not the interface.
+              Three color tokens. One flexible component. Change the system,
+              not the interface.
             </p>
-          <span className="specimen__btn">Explore the system <span aria-hidden="true">↗</span></span>
+            <span className="specimen__btn">
+              Explore the system <span aria-hidden="true">↗</span>
+            </span>
           </div>
         </aside>
       </div>
