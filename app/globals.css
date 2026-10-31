@@ -367,20 +367,16 @@ img {
 .card {
   text-align: left;
   padding: var(--space-5);
-  border: 1px solid var(--line);
-  border-radius: var(--radius-lg);
-  background: var(--panel);
+  border-radius: var(--brand-radius, var(--radius-lg));
+  background: var(--brand-primary);
+  color: var(--color-text-inverse);
   transition:
     background 200ms ease,
     border-color 200ms ease,
     transform 200ms ease;
 }
 
-.card:hover,
-.card:focus-visible,
-.card[aria-expanded="true"] {
-  background: var(--accent-soft);
-  border-color: var(--color-border-active-muted);
+.card:hover {
   transform: translateY(-2px);
 }
 
@@ -388,24 +384,92 @@ img {
   display: flex;
   justify-content: space-between;
   gap: var(--space-3);
-  margin-bottom: var(--space-5);
+  margin-bottom: var(--space-3);
   font-family: var(--font-family-mono), var(--next-font-mono), monospace;
   font-size: 11px;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--fg);
+  color: color-mix(in srgb, var(--color-text-inverse) 72%, var(--brand-primary));
+}
+
+.card__brand {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 48px;
+  margin-bottom: var(--space-4);
+  padding-block: var(--space-2);
+  overflow: hidden;
+  color: var(--color-text-inverse);
+}
+
+.card__brand-mark {
+  display: grid;
+  place-items: center;
+  min-width: 40px;
+  height: 40px;
+  padding-inline: var(--space-2);
+  border-radius: var(--brand-mark-radius, var(--radius-sm));
+  background: var(--brand-accent);
+  color: var(--brand-primary);
+  font-family: var(--brand-mark-font, var(--font-family-sans)), var(--next-font-sans), sans-serif;
+  font-size: var(--brand-mark-size, 18px);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--brand-mark-spacing, -0.04em);
+}
+
+.card__brand-name {
+  font-family: var(--brand-name-font, var(--font-family-sans)), var(--next-font-sans), sans-serif;
+  font-size: 17px;
+  font-weight: var(--font-weight-bold);
+  letter-spacing: var(--brand-name-spacing, -0.03em);
+  text-transform: uppercase;
+}
+
+.card--skyline {
+  --brand-radius: var(--radius-lg);
+  --brand-mark-radius: var(--radius-md);
+  --brand-mark-size: 22px;
+  --brand-mark-spacing: 0;
+  --brand-name-spacing: 0.02em;
+}
+
+.card--ethos {
+  --brand-radius: var(--radius-lg);
+  --brand-mark-radius: var(--radius-md);
+  --brand-mark-font: var(--font-family-serif);
+  --brand-mark-size: 12px;
+  --brand-name-spacing: -0.04em;
+}
+
+.card--ember {
+  --brand-radius: var(--radius-lg);
+  --brand-mark-radius: var(--radius-md);
+  --brand-mark-size: 23px;
+  --brand-mark-spacing: -0.08em;
+  --brand-name-spacing: 0.05em;
+}
+
+.card--momentum {
+  --brand-radius: var(--radius-lg);
+  --brand-mark-radius: var(--radius-md);
+  --brand-mark-size: 14px;
+  --brand-mark-spacing: -0.06em;
+  --brand-name-spacing: -0.02em;
 }
 
 .card h3 {
   margin: 0 0 var(--space-3);
-  font-family: var(--font-family-serif), var(--next-font-serif), serif;
+  color: var(--brand-accent);
+  font-family: var(--brand-name-font, var(--font-family-serif)), var(--next-font-serif), serif;
   font-size: 36px;
   font-weight: var(--font-weight-regular);
 }
 
 .card p {
   margin: 0;
-  color: var(--fg-muted);
+  color: color-mix(in srgb, var(--color-text-inverse) 80%, var(--brand-primary));
   line-height: 1.55;
 }
 
@@ -417,27 +481,13 @@ img {
 }
 
 .card__detail {
-  display: none;
+  display: block;
   margin-top: var(--space-4);
   padding-top: var(--space-4);
-  border-top: 1px solid var(--line-accent);
-  color: var(--accent);
+  border-top: 1px solid color-mix(in srgb, var(--brand-accent) 55%, var(--brand-primary));
+  color: color-mix(in srgb, var(--color-text-inverse) 90%, var(--brand-accent));
   font-size: 14px;
   line-height: 1.5;
-}
-
-.card[aria-expanded="true"] .card__detail {
-  display: block;
-}
-
-.card__toggle {
-  display: block;
-  margin-top: var(--space-4);
-  color: var(--accent);
-  font-family: var(--font-family-mono), var(--next-font-mono), monospace;
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
 }
 
 .section--lab {
@@ -933,9 +983,7 @@ img {
 
   .button:hover,
   .button:focus-visible,
-  .card:hover,
-  .card:focus-visible,
-  .card[aria-expanded="true"] {
+  .card:hover {
     transform: none;
   }
 }

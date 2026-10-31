@@ -32,6 +32,13 @@ const selectorGroups = [
   { label: "Spacing", valueKey: "spacing", group: "spacing" },
 ] as const;
 
+const brandIdentities = {
+  skyline: { primary: "#226194", accent: "#fcb422", mark: "T" },
+  ethos: { primary: "#1a202c", accent: "#305af3", mark: "TIAA" },
+  ember: { primary: "#222222", accent: "#ff6a39", mark: "S" },
+  momentum: { primary: "#005dab", accent: "#ffffff", mark: "GM" },
+} as const;
+
 function getContrastRatio(foreground: string, background: string) {
   const luminance = (hex: string) => {
     const channels = [1, 3, 5].map((offset) => {
@@ -157,7 +164,6 @@ function Hero() {
 
 function Work() {
   const { inspect, reset } = useInspect();
-  const [open, setOpen] = useState<string | null>("skyline");
 
   return (
     <section className="section shell" id="work">
@@ -170,14 +176,14 @@ function Work() {
       </div>
       <div className="work">
         {systems.map((system) => (
-          <button
+          <article
             key={system.id}
-            type="button"
-            className="card"
-            aria-expanded={open === system.id}
-            aria-controls={`project-detail-${system.id}`}
-            onClick={() =>
-              setOpen((current) => (current === system.id ? null : system.id))
+            className={`card card--${system.id}`}
+            style={
+              {
+                "--brand-primary": brandIdentities[system.id].primary,
+                "--brand-accent": brandIdentities[system.id].accent,
+              } as React.CSSProperties
             }
             onMouseEnter={() =>
               inspect({
@@ -188,18 +194,21 @@ function Work() {
             onMouseLeave={reset}
           >
             <div className="card__top">
-              <span>{system.org}</span>
+              <span>Design system</span>
               <span>{system.years}</span>
+            </div>
+            <div className="card__brand">
+              <span className="card__brand-mark" aria-hidden="true">
+                {brandIdentities[system.id].mark}
+              </span>
+              <span className="card__brand-name">{system.org}</span>
             </div>
             <h3>{system.name}</h3>
             <p>{system.summary}</p>
             <div className="card__detail" id={`project-detail-${system.id}`}>
               {system.role}. {system.outcome}
             </div>
-            <span className="card__toggle" aria-hidden="true">
-              {open === system.id ? "− Close notes" : "+ Project notes"}
-            </span>
-          </button>
+          </article>
         ))}
       </div>
     </section>
