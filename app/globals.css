@@ -188,7 +188,7 @@ img {
   align-items: end;
   padding-top: var(--space-7);
   padding-bottom: var(--space-7);
-  min-height: calc(100dvh - 88px);
+  min-height: calc(100dvh - 200px);
 }
 
 .kicker {

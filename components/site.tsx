@@ -76,7 +76,7 @@ function Nav() {
         }
         onMouseLeave={reset}
       >
-        David Poninski <span>Design Systems Leader</span>
+        David Poninski
       </a>
       <nav className="nav__links" aria-label="Sections">
         {links.map(([href, label]) => (
@@ -109,7 +109,7 @@ function Hero() {
   return (
     <section className="hero shell" id="top">
       <div>
-        <p className="kicker">Design systems · Coppell, TX</p>
+        <p className="kicker">Design Systems Leader · Coppell, TX</p>
         <h1>
           Systems that
           <br />
@@ -335,52 +335,54 @@ function TokenLab() {
         >
           <div className="specimen__top">
             <span className="specimen__label">Live token preview</span>
-            <button
-              type="button"
-              className={`reset-button${hasChanges ? " reset-button--changed" : ""}`}
-              style={
-                {
-                  "--lab-text-color": colors.text,
-                  "--lab-border-color": colors.border,
-                  "--lab-surface-color": colors.surface,
-                } as React.CSSProperties
-              }
-              onClick={() => {
-                setColors(defaultColors);
-                setPicked(defaultSpecimen);
-                inspect({
-                  label: "Default tokens",
-                  tokens: [
-                    "--color-text-resting-stronger",
-                    "--color-border-resting-stronger",
-                    "--color-surface-inverse",
-                  ],
-                });
-              }}
-            >
-              <svg
-                aria-hidden="true"
-                viewBox="0 0 24 24"
-                className="reset-button__icon"
-                fill="none"
+            {hasChanges && (
+              <button
+                type="button"
+                className="reset-button reset-button--changed"
+                style={
+                  {
+                    "--lab-text-color": colors.text,
+                    "--lab-border-color": colors.border,
+                    "--lab-surface-color": colors.surface,
+                  } as React.CSSProperties
+                }
+                onClick={() => {
+                  setColors(defaultColors);
+                  setPicked(defaultSpecimen);
+                  inspect({
+                    label: "Default tokens",
+                    tokens: [
+                      "--color-text-resting-stronger",
+                      "--color-border-resting-stronger",
+                      "--color-surface-inverse",
+                    ],
+                  });
+                }}
               >
-                <path
-                  d="M3 12a9 9 0 1 0 2.64-6.36L3 8"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.75"
-                />
-                <path
-                  d="M3 3v5h5"
-                  stroke="currentColor"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="1.75"
-                />
-              </svg>
-              Reset
-            </button>
+                <svg
+                  aria-hidden="true"
+                  viewBox="0 0 24 24"
+                  className="reset-button__icon"
+                  fill="none"
+                >
+                  <path
+                    d="M3 12a9 9 0 1 0 2.64-6.36L3 8"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.75"
+                  />
+                  <path
+                    d="M3 3v5h5"
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="1.75"
+                  />
+                </svg>
+                Reset
+              </button>
+            )}
           </div>
           <div className="specimen__content">
             <h3>Built to belong.</h3>
