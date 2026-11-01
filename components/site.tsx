@@ -123,8 +123,7 @@ function Hero() {
           <em>engineering adopts.</em>
         </h1>
         <p className="lede">
-          I take Figma libraries and design tokens all the way to production
-          code. Four systems shipped. No handoff gap. No drift.
+          I take token driven design systems from concept to API.
         </p>
         <div className="hero__actions">
           <a className="button button--primary" href="#work">
