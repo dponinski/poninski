@@ -120,9 +120,6 @@ function Work() {
               <span>{system.years}</span>
             </div>
             <div className="card__brand">
-              <span className="card__brand-mark" aria-hidden="true">
-                {brandIdentities[system.id].mark}
-              </span>
               <span className="card__brand-name">{system.org}</span>
             </div>
             <h3>{system.name}</h3>
