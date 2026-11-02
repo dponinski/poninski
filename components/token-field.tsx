@@ -145,10 +145,6 @@ export function TokenField() {
       }}
     >
       <canvas ref={canvasRef} aria-hidden="true" />
-      <div className="field-meta">
-        <span className="chip">resting → active</span>
-        <span className="chip">pointer as token</span>
-      </div>
     </div>
   );
 }

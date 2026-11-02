@@ -57,103 +57,26 @@ function getContrastRatio(foreground: string, background: string) {
   return (values[0] + 0.05) / (values[1] + 0.05);
 }
 
-function Nav() {
-  const { inspect, reset } = useInspect();
-  const links = [
-    ["#work", "Work"],
-    ["#tokens", "Tokens"],
-    ["#approach", "Approach"],
-    ["#contact", "Contact"],
-  ] as const;
-
-  return (
-    <header className="nav shell">
-      <a
-        href="#top"
-        className="nav__mark"
-        onMouseEnter={() =>
-          inspect({
-            label: "Wordmark",
-            tokens: [
-              "--font-family-serif",
-              "--font-family-mono",
-              "--color-text-resting-stronger",
-            ],
-          })
-        }
-        onMouseLeave={reset}
-      >
-        David Poninski
-      </a>
-      <nav className="nav__links" aria-label="Sections">
-        {links.map(([href, label]) => (
-          <a
-            key={href}
-            href={href}
-            onMouseEnter={() =>
-              inspect({
-                label: `${label} link`,
-                tokens: [
-                  "--radius-full",
-                  "--font-family-mono",
-                  "--color-text-active-strong",
-                ],
-              })
-            }
-            onMouseLeave={reset}
-          >
-            {label}
-          </a>
-        ))}
-      </nav>
-    </header>
-  );
-}
-
 function Hero() {
   const { inspect, reset } = useInspect();
 
   return (
     <section className="hero shell" id="top">
       <div>
-        <p className="kicker">Design Systems Leader · Coppell, TX</p>
+        <p className="kicker">David Poninski · Design Systems Leader · Coppell, TX</p>
         <h1>
           Systems that
           <br />
           <em>engineering adopts.</em>
         </h1>
-        <p className="lede">
-          I take token driven design systems from concept to API.
-        </p>
+        <p></p>
         <div className="hero__actions">
           <a className="button button--primary" href="#work">
-            Explore selected work <span aria-hidden="true">↘</span>
+            Explore selected work
           </a>
           <a className="button button--quiet" href="mailto:hello@poninski.com">
-            Get in touch <span aria-hidden="true">↗</span>
+            Get in touch
           </a>
-        </div>
-        <div className="stats">
-          {[
-            ["4", "Systems owned"],
-            ["13+", "Years in UX"],
-            ["40+", "Skyline components"],
-          ].map(([value, label]) => (
-            <div
-              key={label}
-              className="stat"
-              onMouseEnter={() =>
-                inspect({
-                  label,
-                  tokens: [],
-                })
-              }
-              onMouseLeave={reset}
-            >
-              <b>{value}</b>
-              <span>{label}</span>
-            </div>
-          ))}
         </div>
       </div>
       <TokenField />
@@ -493,7 +416,6 @@ export function Site() {
       <a className="skip" href="#work">
         Skip to work
       </a>
-      <Nav />
       <main>
         <Hero />
         <Work />
