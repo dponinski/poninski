@@ -29,7 +29,9 @@
   --font-family-sans: "Geist";
   --font-family-serif: "Libre Baskerville";
   --font-family-mono: "Geist Mono";
+  --font-size-caption: 12px;
   --font-size-small: 13px;
+  --font-size-detail: 15px;
   --font-size-base: 18px;
   --font-size-h6: 24px;
   --font-size-h5: 30px;

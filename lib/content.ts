@@ -56,3 +56,9 @@ export const principles = [
     body: "A system that ships and isn’t used is a styleguide. Governance, mentoring, and component APIs are the work.",
   },
 ];
+
+export const stats = [
+  { value: "4", label: "Systems shipped" },
+  { value: "40+", label: "Components" },
+  { value: "8", label: "Designers led" },
+] as const;

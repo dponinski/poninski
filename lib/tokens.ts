@@ -62,7 +62,9 @@ export const tokens: Token[] = [
     preview: "type",
   },
   ...[
+    ["Caption", "--font-size-caption"],
     ["Small", "--font-size-small"],
+    ["Detail", "--font-size-detail"],
     ["Base", "--font-size-base"],
     ["H6", "--font-size-h6"],
     ["H5", "--font-size-h5"],

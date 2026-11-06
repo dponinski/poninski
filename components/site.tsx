@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { principles, systems } from "@/lib/content";
+import { principles, stats, systems } from "@/lib/content";
 import { tokens } from "@/lib/tokens";
-import { InspectProvider, useInspect } from "./inspect";
+import { InspectProvider, Inspector, useInspect } from "./inspect";
 import { TokenField } from "./token-field";
 
 const defaultSpecimen = {
@@ -32,11 +32,13 @@ const selectorGroups = [
   { label: "Spacing", valueKey: "spacing", group: "spacing" },
 ] as const;
 
+const EMAIL = "dponinski@icloud.com";
+
 const brandIdentities = {
-  skyline: { primary: "#226194", accent: "#fcb422", mark: "T" },
-  ethos: { primary: "#1a202c", accent: "#305af3", mark: "TIAA" },
-  ember: { primary: "#222222", accent: "#ff6a39", mark: "S" },
-  momentum: { primary: "#005dab", accent: "#ffffff", mark: "GM" },
+  skyline: { primary: "#226194", accent: "#fcb422" },
+  ethos: { primary: "#1a202c", accent: "#305af3" },
+  ember: { primary: "#222222", accent: "#ff6a39" },
+  momentum: { primary: "#005dab", accent: "#ffffff" },
 } as const;
 
 function getContrastRatio(foreground: string, background: string) {
@@ -69,15 +71,37 @@ function Hero() {
           <br />
           <em>engineering adopts.</em>
         </h1>
-        <p></p>
+        <p className="hero__lede">
+          I build token-driven design systems — Figma libraries through
+          versioned component packages — and the governance that gets them
+          adopted.
+        </p>
         <div className="hero__actions">
           <a className="button button--primary" href="#work">
             Explore selected work
           </a>
-          <a className="button button--quiet" href="mailto:hello@poninski.com">
+          <a className="button button--quiet" href={`mailto:${EMAIL}`}>
             Get in touch
           </a>
         </div>
+        <dl className="stats">
+          {stats.map((stat) => (
+            <div
+              className="stat"
+              key={stat.label}
+              onMouseEnter={() =>
+                inspect({
+                  label: stat.label,
+                  tokens: ["--font-family-serif", "--font-size-h5"],
+                })
+              }
+              onMouseLeave={reset}
+            >
+              <dt>{stat.label}</dt>
+              <dd>{stat.value}</dd>
+            </div>
+          ))}
+        </dl>
       </div>
       <TokenField />
     </section>
@@ -90,7 +114,7 @@ function Work() {
   return (
     <section className="section shell" id="work">
       <div className="section__head">
-        <h2>Libraries in the wild</h2>
+        <h2>Selected systems</h2>
         <p>
           Each system is a different org, a different stack, the same bet:
           tokens as the contract between design and code.
@@ -110,7 +134,10 @@ function Work() {
             onMouseEnter={() =>
               inspect({
                 label: `${system.name} / ${system.org}`,
-                tokens: [],
+                tokens: [
+                  `--brand-primary: ${brandIdentities[system.id].primary}`,
+                  `--brand-accent: ${brandIdentities[system.id].accent}`,
+                ],
               })
             }
             onMouseLeave={reset}
@@ -334,7 +361,7 @@ function Approach() {
   return (
     <section className="section shell" id="approach">
       <div className="section__head">
-        <h2>How the work holds</h2>
+        <h2>How I work</h2>
         <p>
           Hands-on systems design and people leadership in the same seat —
           governance, mentoring, and still deep on token architecture.
@@ -369,7 +396,7 @@ function Footer() {
   const { inspect, reset } = useInspect();
   const links = [
     ["https://www.linkedin.com/in/dponinski", "LinkedIn"],
-    ["mailto:dponinski@icloud.com", "Email"],
+    [`mailto:${EMAIL}`, "Email"],
   ] as const;
 
   return (
@@ -385,6 +412,17 @@ function Footer() {
             key={href}
             href={href}
             className="chip"
+            onFocus={() =>
+              inspect({
+                label,
+                tokens: [
+                  "--radius-full",
+                  "--color-text-active-strong",
+                  "--font-family-mono",
+                ],
+              })
+            }
+            onBlur={reset}
             target={href.startsWith("http") ? "_blank" : undefined}
             rel={href.startsWith("http") ? "noreferrer" : undefined}
             onMouseEnter={() =>
@@ -420,6 +458,7 @@ export function Site() {
         <Approach />
       </main>
       <Footer />
+      <Inspector />
     </InspectProvider>
   );
 }

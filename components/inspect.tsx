@@ -55,7 +55,8 @@ export function Inspector() {
   const { state } = useInspect();
 
   return (
-    <div className="inspector" role="status" aria-live="polite">
+    // Decorative: mirrors hover/focus state; all content is available elsewhere.
+    <div className="inspector" aria-hidden="true">
       <div className="inspector__group">
         <span className="dot" aria-hidden="true" />
         <b>{state.label}</b>
