@@ -62,3 +62,13 @@ export const stats = [
   { value: "40+", label: "Components" },
   { value: "8", label: "Designers led" },
 ] as const;
+
+export const profile = {
+  name: "David Poninski",
+  title: "Design Systems Leader",
+  location: "Coppell, TX",
+  email: "dponinski@icloud.com",
+  linkedin: "https://www.linkedin.com/in/dponinski",
+  resume: "/David_Poninski_Resume_2026.pdf",
+  url: "https://www.poninski.com",
+} as const;

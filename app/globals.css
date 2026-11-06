@@ -29,8 +29,9 @@
   --space-8: calc(var(--spacing-xl) + var(--spacing-lg) + var(--spacing-xs));
 }
 
+/* Dark theme: follows the OS unless the visitor picks a theme (data-theme). */
 @media (prefers-color-scheme: dark) {
-  :root {
+  :root:not([data-theme="light"]) {
     color-scheme: dark;
     --bg: var(--color-surface-resting-stronger);
     --fg: var(--color-text-inverse);
@@ -49,6 +50,26 @@
     --focus-ring: var(--color-border-active-muted);
     --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='m4 6 4 4 4-4' stroke='%2372D8E5' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5'/%3E%3C/svg%3E");
   }
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --bg: var(--color-surface-resting-stronger);
+  --fg: var(--color-text-inverse);
+  --fg-muted: var(--color-text-resting-subtle);
+  --fg-faint: var(--color-text-resting-subtle);
+  --accent: var(--color-text-active-subtle);
+  --accent-soft: var(--color-surface-active-stronger);
+  --accent-mid: var(--color-surface-active-muted);
+  --accent-contrast: var(--color-text-inverse);
+  --accent-hover-bg: var(--color-text-active-muted);
+  --accent-hover-fg: var(--color-text-active-stronger);
+  --selection-fg: var(--color-text-inverse);
+  --line: var(--color-border-resting-strong);
+  --line-accent: var(--color-border-active-muted);
+  --panel: color-mix(in srgb, var(--color-surface-inverse) 8%, var(--bg));
+  --focus-ring: var(--color-border-active-muted);
+  --chevron: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='m4 6 4 4 4-4' stroke='%2372D8E5' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5'/%3E%3C/svg%3E");
 }
 
 *,
@@ -121,6 +142,104 @@ img {
 
 .skip:focus {
   top: var(--space-4);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+main section[id],
+footer[id] {
+  scroll-margin-top: 80px;
+}
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 15;
+  border-bottom: 1px solid var(--line);
+  background: color-mix(in srgb, var(--bg) 85%, transparent);
+  backdrop-filter: blur(10px);
+}
+
+.site-header__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  min-height: 60px;
+}
+
+.site-header__name {
+  font-family: var(--font-family-serif), var(--next-font-serif), serif;
+  font-size: var(--font-size-base);
+  white-space: nowrap;
+}
+
+.site-header__nav {
+  display: flex;
+  gap: var(--space-5);
+}
+
+.site-header__nav a,
+.site-header__resume {
+  color: var(--fg-muted);
+  font-family: var(--font-family-mono), var(--next-font-mono), monospace;
+  font-size: var(--font-size-caption);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  transition: color 160ms ease;
+}
+
+.site-header__nav a:hover,
+.site-header__resume:hover {
+  color: var(--accent);
+}
+
+.site-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.site-header__resume {
+  display: inline-flex;
+  align-items: center;
+  min-height: 36px;
+  padding: 0 var(--space-3);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+}
+
+.theme-toggle {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-full);
+  color: var(--fg-muted);
+  transition:
+    background 160ms ease,
+    color 160ms ease,
+    border-color 160ms ease;
+}
+
+.theme-toggle:hover {
+  border-color: var(--line-accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
 }
 
 .shell {
@@ -390,7 +509,7 @@ img {
 
 .contrast-checker {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
   gap: var(--space-2);
 }
 
@@ -663,17 +782,69 @@ img {
 }
 
 .specimen__btn:hover {
-  border-color: color-mix(
-    in srgb,
-    var(--lab-border-color, var(--color-border-resting-stronger)) 82%,
-    black
-  );
-  background: color-mix(
-    in srgb,
-    var(--lab-border-color, var(--color-border-resting-stronger)) 82%,
-    black
-  );
-  color: var(--color-text-inverse);
+  border-color: var(--lab-border-color, var(--color-border-resting-stronger));
+  background: var(--lab-border-color, var(--color-border-resting-stronger));
+  color: var(--lab-on-border-color, var(--color-text-inverse));
+}
+
+.token-export {
+  margin-top: var(--space-5);
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  background: var(--panel);
+  overflow: hidden;
+}
+
+.token-export__bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  border-bottom: 1px solid var(--line);
+}
+
+.token-export__tabs {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.token-export__tabs button,
+.token-export__copy {
+  min-height: 32px;
+  padding: 0 var(--space-3);
+  border: 1px solid transparent;
+  border-radius: var(--radius-full);
+  color: var(--fg-muted);
+  font-family: var(--font-family-mono), var(--next-font-mono), monospace;
+  font-size: var(--font-size-caption);
+  letter-spacing: 0.04em;
+}
+
+.token-export__tabs button[aria-pressed="true"] {
+  border-color: var(--line-accent);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.token-export__copy {
+  border-color: var(--line);
+}
+
+.token-export__copy:hover,
+.token-export__tabs button:hover {
+  color: var(--accent);
+}
+
+.token-export__code {
+  max-height: 320px;
+  margin: 0;
+  padding: var(--space-4);
+  overflow: auto;
+  color: var(--fg);
+  font-family: var(--font-family-mono), var(--next-font-mono), monospace;
+  font-size: var(--font-size-caption);
+  line-height: 1.6;
 }
 
 .principles {
@@ -786,6 +957,12 @@ img {
   gap: var(--space-2);
 }
 
+@media (max-width: 760px) {
+  .site-header__nav {
+    gap: var(--space-3);
+  }
+}
+
 @media (max-width: 900px) {
   .hero,
   .lab,
@@ -808,6 +985,10 @@ img {
 @media (max-width: 560px) {
   .shell {
     width: min(100% - var(--space-4), 1180px);
+  }
+
+  .site-header__nav {
+    display: none;
   }
 
   .hero {
