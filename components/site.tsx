@@ -10,7 +10,7 @@ function Hero() {
     <section className="hero shell" id="top">
       <div>
         <p className="kicker">
-          {profile.name} · {profile.title} · {profile.location}
+          {profile.title} · {profile.location}
         </p>
         <h1>
           Systems that
