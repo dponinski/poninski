@@ -1,48 +1,9 @@
+import { brandIdentities } from "@/lib/brands";
 import { principles, profile, stats, systems } from "@/lib/content";
-import { InspectProvider, Inspector } from "./inspect";
 import { Inspectable } from "./inspectable";
-import { ThemeToggle } from "./theme-toggle";
+import { PageShell } from "./site-chrome";
 import { TokenField } from "./token-field";
 import { TokenLab } from "./token-lab";
-
-const brandIdentities = {
-  skyline: { primary: "#226194", accent: "#fcb422" },
-  ethos: { primary: "#1a202c", accent: "#305af3" },
-  ember: { primary: "#222222", accent: "#ff6a39" },
-  momentum: { primary: "#005dab", accent: "#ffffff" },
-} as const;
-
-const navLinks = [
-  ["#work", "Work"],
-  ["#tokens", "Lab"],
-  ["#approach", "Approach"],
-  ["#contact", "Contact"],
-] as const;
-
-function Header() {
-  return (
-    <header className="site-header">
-      <div className="site-header__inner shell">
-        <a className="site-header__name" href="#top">
-          {profile.name}
-        </a>
-        <nav aria-label="Sections" className="site-header__nav">
-          {navLinks.map(([href, label]) => (
-            <a key={href} href={href}>
-              {label}
-            </a>
-          ))}
-        </nav>
-        <div className="site-header__actions">
-          <a className="site-header__resume" href={profile.resume} download>
-            Résumé
-          </a>
-          <ThemeToggle />
-        </div>
-      </div>
-    </header>
-  );
-}
 
 function Hero() {
   return (
@@ -128,11 +89,20 @@ function Work() {
               <div className="card__brand">
                 <span className="card__brand-name">{system.org}</span>
               </div>
-              <h3>{system.name}</h3>
+              <h3>
+                {/* Stretched link: the whole card is clickable, one tab stop. */}
+                <a className="card__link" href={`/work/${system.id}`}>
+                  {system.name}
+                  <span className="visually-hidden"> case study</span>
+                </a>
+              </h3>
               <p>{system.summary}</p>
               <div className="card__detail">
                 {system.role}. {system.outcome}
               </div>
+              <span className="card__cta" aria-hidden="true">
+                Read the case study →
+              </span>
             </Inspectable>
           );
         })}
@@ -172,45 +142,6 @@ function Approach() {
   );
 }
 
-function Footer() {
-  const links = [
-    { href: profile.linkedin, label: "LinkedIn", external: true },
-    { href: `mailto:${profile.email}`, label: "Email" },
-    { href: profile.resume, label: "Résumé (PDF)", download: true },
-  ];
-
-  return (
-    <footer className="footer shell" id="contact">
-      <div>
-        <p className="kicker">Currently exploring</p>
-        <h2>Design Systems roles.</h2>
-        <p>Remote. Tokens to production. Teams that want the system used.</p>
-      </div>
-      <div className="footer__links">
-        {links.map(({ href, label, external, download }) => (
-          <Inspectable
-            as="a"
-            key={href}
-            href={href}
-            className="chip"
-            target={external ? "_blank" : undefined}
-            rel={external ? "noreferrer" : undefined}
-            download={download}
-            label={label}
-            tokens={[
-              "--radius-full",
-              "--color-text-active-strong",
-              "--font-family-mono",
-            ]}
-          >
-            {label}
-          </Inspectable>
-        ))}
-      </div>
-    </footer>
-  );
-}
-
 const personJsonLd = {
   "@context": "https://schema.org",
   "@type": "Person",
@@ -224,23 +155,15 @@ const personJsonLd = {
 
 export function Site() {
   return (
-    <InspectProvider>
-      <a className="skip" href="#main">
-        Skip to content
-      </a>
-      <Header />
-      <main id="main">
-        <Hero />
-        <Work />
-        <TokenLab />
-        <Approach />
-      </main>
-      <Footer />
-      <Inspector />
+    <PageShell>
+      <Hero />
+      <Work />
+      <TokenLab />
+      <Approach />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd) }}
       />
-    </InspectProvider>
+    </PageShell>
   );
 }

@@ -4,7 +4,7 @@ import { createElement, type ReactNode } from "react";
 import { useInspect } from "./inspect";
 
 type InspectableProps = {
-  as?: "a" | "article" | "div";
+  as?: "a" | "article" | "div" | "li";
   label: string;
   tokens: string[];
   className?: string;

@@ -15,12 +15,8 @@ type InspectState = {
 };
 
 const defaultState: InspectState = {
-  label: "Move across the field",
-  tokens: [
-    "--color-surface-resting-subtle",
-    "--color-surface-active-muted",
-    "--radius-xs",
-  ],
+  label: "Hover anything to inspect its tokens",
+  tokens: ["--color-surface-resting-subtle", "--font-family-mono"],
 };
 
 const InspectContext = createContext<{
