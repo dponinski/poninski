@@ -41,7 +41,6 @@ export default async function CaseStudyPage({ params }: Props) {
     ["Organization", system.org],
     ["Role", system.role],
     ["Years", system.years],
-    ["Products", caseStudy.products.join(", ")],
   ] as const;
 
   return (
