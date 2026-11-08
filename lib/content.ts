@@ -10,7 +10,6 @@ export type CaseStudyMedia = {
 };
 
 export type CaseStudy = {
-  products: string[];
   challenge: string;
   approach: string[];
   adoption: string;
@@ -44,7 +43,6 @@ export const systems: DesignSystem[] = [
     outcome:
       "40+ components, AI-assisted design-to-code, no dedicated systems engineering staff.",
     caseStudy: {
-      products: ["TreppCRE", "TreppCLO", "TreppCMBS"],
       challenge:
         "Trepp’s four data products needed one consistent interface, but there was no dedicated design system engineering staff to build or maintain a shared library. A single front-end team had to be able to consume the system and ship with it.",
       approach: [
@@ -75,7 +73,6 @@ export const systems: DesignSystem[] = [
       "Drove full adoption across 4–5 B2B product lines and wired design tokens into the shared component library so design and code stayed one source of truth.",
     outcome: "Adopted by every design and engineering team on those products.",
     caseStudy: {
-      products: ["PlanHealth"],
       challenge:
         "Ethos had to serve 4–5 B2B product lines, each supported by multiple delivery teams. Design files and shipped code could easily drift apart, and product-specific needs pulled against system-level consistency.",
       approach: [
@@ -103,7 +100,6 @@ export const systems: DesignSystem[] = [
       "Led UX for US and European retail during a headless migration, and built Ember to unify the brand’s commerce experience across regions.",
     outcome: "One system for two continents and a new architecture.",
     caseStudy: {
-      products: ["solostove.com (US & Europe)"],
       challenge:
         "Solo Stove was moving its US and European retail websites from a legacy platform to a headless architecture. Without a shared system, each region and each new front end risked diverging from the brand.",
       approach: [
@@ -130,7 +126,6 @@ export const systems: DesignSystem[] = [
       "Scaled Momentum from UI kits to framework-level engineering while managing a team of eight designers across B2C, B2B, and international products.",
     outcome: "Adoption across ~6 engineering teams.",
     caseStudy: {
-      products: ["MyAccount B2C/B2B", "GM Financial Mobile App"],
       challenge:
         "Momentum started as UI kits. GM Financial’s B2C, B2B, and international products needed it to become something engineering could build on directly, while the design team itself was growing.",
       approach: [
