@@ -1,0 +1,36 @@
+{
+  "motif": 1,
+  "id": "xHTSbWYv",
+  "name": "Motif Design",
+  "componentGroups": [],
+  "components": [
+    {
+      "elements": {
+        "tcH2iLVz": {
+          "children": [],
+          "cornerRadius": 0,
+          "fill": "#4338ca",
+          "fillTokenId": "c8",
+          "height": 78,
+          "id": "tcH2iLVz",
+          "name": "Frame",
+          "opacity": 1,
+          "rotation": 0,
+          "stroke": "#6366f1",
+          "strokeWidth": 1,
+          "type": "frame",
+          "width": 188,
+          "x": 184,
+          "y": 230
+        }
+      },
+      "groupId": null,
+      "id": "comp-main",
+      "name": "Main",
+      "order": [
+        "tcH2iLVz"
+      ],
+      "variantProps": []
+    }
+  ]
+}
